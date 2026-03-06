@@ -1,0 +1,49 @@
+{
+  "video_id": "string",
+  "overall_summary": {
+    "strengths": ["string"],
+    "top_issues": ["string"],
+    "next_session_focus": ["string"]
+  },
+  "dimension_feedback": [
+    {
+      "dimension_key": "clarity",
+      "score": 3,
+      "headline": "重點清楚，但有幾句太長令學生難跟",
+      "evidence": [
+        {
+          "start_sec": 73,
+          "end_sec": 92,
+          "transcript_quote": "string",
+          "tags": ["long_sentence", "jargon"]
+        }
+      ],
+      "why_it_matters": "string",
+      "coaching_actions": [
+        "把一句拆成兩句：先定義，再舉例",
+        "每講完一點，加一句總結句"
+      ],
+      "suggested_rewrites_zh_hk": [
+        {
+          "original": "string",
+          "rewrites": ["string", "string"],
+          "techniques_used": ["mi_open_questions"]
+        }
+      ]
+    }
+  ],
+  "technique_plan": {
+    "schools_used": ["MI", "CBT"],
+    "techniques_used": ["mi_open_questions", "cbt_socratic"],
+    "notes": "避免盤問式語氣；每個追問之間加反映/肯定。"
+  },
+  "metrics": {
+    "words_per_minute": 148,
+    "silence_ratio": 0.07,
+    "filler_words_top": [{"token": "即係", "count": 12}],
+    "question_ratio": 0.18
+  },
+  "warnings": [
+    "此回饋基於語音/文字與可量化訊號；同理語氣判斷可能受口語習慣影響，請老師二次確認。"
+  ]
+}

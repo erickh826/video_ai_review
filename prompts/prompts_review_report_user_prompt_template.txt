@@ -1,0 +1,15 @@
+【Context】
+- mode: {{mode}}
+- locale: zh-HK
+- video_length_sec: {{video_length_sec}}
+
+【Technique Plan JSON】
+{{technique_plan_json}}
+
+【Rubric JSON】
+{{rubric_json}}
+
+【Evidence Pack JSON】
+{{evidence_pack_json}}
+
+請生成 review_output JSON。

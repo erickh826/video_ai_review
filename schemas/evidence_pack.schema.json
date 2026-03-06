@@ -1,0 +1,32 @@
+{
+  "transcript_segments": [
+    {
+      "start_sec": 70,
+      "end_sec": 92,
+      "speaker": "consultant",
+      "text_zh_hk": "..."
+    }
+  ],
+  "detections": [
+    {
+      "type": "filler_word",
+      "token": "即係",
+      "count": 3,
+      "start_sec": 120,
+      "end_sec": 160,
+      "evidence_segment_ids": ["seg_12", "seg_13"]
+    },
+    {
+      "type": "closed_question",
+      "pattern": "你明唔明",
+      "start_sec": 210,
+      "end_sec": 214,
+      "text": "你明唔明我意思？"
+    }
+  ],
+  "metrics": {
+    "words_per_minute": 155,
+    "silence_ratio": 0.06,
+    "question_ratio": 0.22
+  }
+}

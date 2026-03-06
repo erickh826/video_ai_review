@@ -1,0 +1,47 @@
+{
+  "techniques": [
+    {
+      "id": "mi_open_questions",
+      "school": "MI",
+      "name": "開放式提問 (O in OARS)",
+      "when_to_use": [
+        "學生表達模糊",
+        "需要探索動機/價值",
+        "避免過早給建議"
+      ],
+      "avoid_when": [
+        "需要立即安全指示",
+        "對方明確要求直接答案且時間極短"
+      ],
+      "rewrite_goal": "把封閉式/引導式問句改成探索式開放問句",
+      "pattern_hints": {
+        "bad_patterns": ["你係咪...？", "你明唔明？", "你可以唔可以...？"],
+        "good_starters": ["你點睇...？", "可唔可以講多啲...？", "對你嚟講最重要係...？"]
+      },
+      "example_rewrites": [
+        {
+          "from": "你明唔明我意思？",
+          "to": ["你可唔可以用你嘅說法講返你理解到乜？", "你聽完之後最重點你拎走咗邊一樣？"]
+        }
+      ]
+    },
+    {
+      "id": "cbt_socratic",
+      "school": "CBT",
+      "name": "蘇格拉底式提問",
+      "when_to_use": ["需要澄清想法-情緒-行為鏈", "挑戰認知偏誤但保持合作"],
+      "avoid_when": ["對方情緒過高需要先穩定", "語氣容易變成盤問"],
+      "rewrite_goal": "把“說教/糾正”改為共同探索證據與替代想法",
+      "pattern_hints": {
+        "good_starters": ["有乜證據支持呢個想法？", "有冇例外情況？", "如果你朋友遇到同樣情況你會點講？"]
+      }
+    },
+    {
+      "id": "sfbf_exception",
+      "school": "SFBT",
+      "name": "例外提問（Exception question）",
+      "when_to_use": ["建立希望感", "找出已經有效的行為"],
+      "rewrite_goal": "把問題聚焦改成資源聚焦"
+    }
+  ]
+}

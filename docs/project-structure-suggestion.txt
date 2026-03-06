@@ -1,0 +1,23 @@
+project-root/
+  README.md
+  .gitignore
+  docker-compose.yml
+  .env.example
+
+  docs/
+    api-outline.txt
+
+  schemas/
+    rubric.schema.json
+    technique_catalog.schema.json
+    technique_plan.schema.json
+    evidence_pack.schema.json
+    review_output.schema.json
+    (如果你有其他 schema 再放這裡)
+
+  prompts/
+    review_report_system_prompt.txt
+    review_report_user_prompt_template.txt
+
+  src/                      # 你的應用程式碼（後端）
+    ...

@@ -1,0 +1,13 @@
+video_review/
+  docs/
+    docs_api-outline.txt
+    docs_project-structure-suggestion.txt
+  prompts/
+    prompts_review_report_system_prompt.txt
+    prompts_review_report_user_prompt_template.txt
+  schemas/
+    schemas_evidence_pack.schema.json
+    schemas_review_output.schema.json
+    schemas_rubric.schema.json
+    schemas_technique_catalog.schema.json
+    schemas_technique_plan.schema.json

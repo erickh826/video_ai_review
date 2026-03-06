@@ -1,0 +1,42 @@
+{
+  "context": {
+    "mode": "consulting_to_camera | classroom",
+    "audience": "students",
+    "locale": "zh-HK",
+    "keep_colloquial": true
+  },
+  "mix_policy": {
+    "type": "auto_with_manual_override",
+    "weights": { "MI": 0.4, "CBT": 0.3, "ACT": 0.2, "SFBT": 0.1 },
+    "locked_schools": [],
+    "style_controls": {
+      "directness": "medium",
+      "warmth": "high",
+      "professional_formality": "medium",
+      "avoid_therapy_claims": true
+    }
+  },
+  "dimension_to_techniques": {
+    "empathy_tone": ["MI_reflection", "MI_affirmation", "ACT_acceptance_language"],
+    "questioning": ["MI_open_questions", "CBT_socratic", "SFBT_exception_question", "SFBT_scaling_question"],
+    "encouragement": ["MI_affirmation", "SFBT_progress_focus"],
+    "clarity": ["CBT_guided_discovery_structure", "CBT_behavioral_experiment_framing"],
+    "structure": ["CBT_agenda_setting", "CBT_summary_check"],
+    "pace": ["CBT_chunking", "MI_elicit_provide_elicit"],
+    "examples": ["SFBT_exceptions", "ACT_values_linking"],
+    "professionalism": ["CBT_precision_language", "ACT_defusion_no_overclaim"]
+  },
+  "guardrails": {
+    "do_not_do": [
+      "diagnose",
+      "promise outcomes",
+      "shame language",
+      "mind-reading about student intent"
+    ],
+    "must_include_in_feedback": [
+      "timecoded_evidence",
+      "one_actionable_next_step",
+      "at_least_one_zh_hk_rewrite_example"
+    ]
+  }
+}

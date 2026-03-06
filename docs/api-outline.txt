@@ -1,0 +1,10 @@
+POST   /api/videos                       上傳（回傳 video_id, upload_url 或直接 multipart）
+POST   /api/videos/{video_id}/process    啟動處理（asr/features/llm）
+GET    /api/videos/{video_id}            影片狀態、metadata
+GET    /api/videos/{video_id}/transcript 逐字稿（含 timestamps）
+GET    /api/videos/{video_id}/review     回饋報告（review_output JSON）
+POST   /api/videos/{video_id}/chat       Chatbot 問答（可要求引用 evidence）
+GET    /api/rubrics                      列出 rubrics
+POST   /api/rubrics                      建立/更新 rubric
+GET    /api/techniques                   技巧庫（可依 school filter）
+POST   /api/techniques/plan              產生某影片的技巧混用建議（可選）

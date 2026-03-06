@@ -1,0 +1,108 @@
+{
+  "rubric_id": "string",
+  "name": "string",
+  "language_locale": "zh-HK",
+  "dimensions": [
+    {
+      "key": "clarity",
+      "label": "清晰度",
+      "weight": 1.0,
+      "description": "用字是否清楚、句子是否過長、概念是否有定義與重點",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "avg_sentence_length",
+        "jargon_without_definition",
+        "summary_statements",
+        "filler_words_rate"
+      ]
+    },
+    {
+      "key": "pace",
+      "label": "節奏",
+      "weight": 1.0,
+      "description": "語速、停頓、段落切分、是否有留白讓學生消化",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "words_per_minute",
+        "silence_ratio",
+        "topic_switch_rate"
+      ]
+    },
+    {
+      "key": "empathy_tone",
+      "label": "同理語氣",
+      "weight": 1.0,
+      "description": "是否承接學生感受、避免否定、用更邀請式語言",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "validation_phrases",
+        "harsh_negation_phrases",
+        "you_statements_vs_i_statements"
+      ]
+    },
+    {
+      "key": "questioning",
+      "label": "提問技巧",
+      "weight": 1.0,
+      "description": "開放式問題、探索性追問、是否引導思考而非直接給答案",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "open_question_ratio",
+        "followup_question_chains",
+        "leading_questions"
+      ]
+    },
+    {
+      "key": "structure",
+      "label": "結構",
+      "weight": 1.0,
+      "description": "是否有開場、目標、步驟、總結與轉場",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "explicit_agenda",
+        "signposting_phrases",
+        "summary_at_end"
+      ]
+    },
+    {
+      "key": "examples",
+      "label": "用例",
+      "weight": 1.0,
+      "description": "例子是否貼地、是否有對比、是否能連到學生情境",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "example_density",
+        "analogy_usage"
+      ]
+    },
+    {
+      "key": "professionalism",
+      "label": "專業度",
+      "weight": 1.0,
+      "description": "概念是否準確、邏輯是否一致、避免誤導或過度承諾",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "overclaim_phrases",
+        "uncertainty_markers",
+        "definition_quality"
+      ]
+    },
+    {
+      "key": "encouragement",
+      "label": "鼓勵性",
+      "weight": 1.0,
+      "description": "是否有具體正向回饋、強化學生有效行為、給可行下一步",
+      "scoring_scale": { "min": 1, "max": 4, "labels": { "1": "需改善", "2": "一般", "3": "良好", "4": "優秀" } },
+      "signals": [
+        "specific_praise",
+        "next_step_suggestions"
+      ]
+    }
+  ],
+  "style_guide": {
+    "tone": "supportive_coach",
+    "locale": "zh-HK",
+    "keep_colloquial": true,
+    "avoid": ["羞辱", "貼標籤診斷", "保證療效", "過度主觀推斷"]
+  }
+}
