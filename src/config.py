@@ -1,4 +1,6 @@
-from pydantic_settings import BaseSettings
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Literal, Optional
 
 
@@ -24,6 +26,10 @@ class Settings(BaseSettings):
     aws_secret_access_key: str = ""
     s3_prefix: str = "video-review/"
 
+    # AWS SQS
+    sqs_queue_url: str = ""
+    sqs_queue_arn: str = ""
+
     # Azure Blob
     azure_storage_connection_string: str = ""
     azure_storage_container: str = "video-review"
@@ -41,11 +47,11 @@ class Settings(BaseSettings):
     max_upload_size_mb: int = 500
     signed_url_ttl_seconds: int = 900  # 15 minutes
 
-    model_config = {
-        "env_file": ".env",
-        "env_file_encoding": "utf-8",
-        "case_sensitive": False,
-    }
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).resolve().parents[1] / ".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+    )
 
 
 settings = Settings()
