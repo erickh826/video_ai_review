@@ -1,3 +1,7 @@
+
+
+
+
 import json
 import os
 import time
@@ -5,9 +9,16 @@ import urllib.parse
 
 import boto3
 
+try:
+    # Works when run from the project root, e.g. `python -m src.worker_sqs`.
+    from src.config import settings
+except ModuleNotFoundError:
+    # Works when run directly from inside the `src` folder.
+    from config import settings
 
-AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
-SQS_QUEUE_URL = os.environ["SQS_QUEUE_URL"]
+AWS_REGION = settings.aws_region or "us-east-1"
+SQS_QUEUE_URL = settings.sqs_queue_url
+
 
 
 def _try_parse_s3_event(payload: dict):
@@ -28,10 +39,12 @@ def extract_s3_info_from_sqs_message(body: str):
     except json.JSONDecodeError:
         return None
 
+    # direct S3->SQS
     parsed = _try_parse_s3_event(payload)
     if parsed:
         return parsed
 
+    # SNS wrapper (Message is a JSON string)
     msg = payload.get("Message")
     if isinstance(msg, str):
         try:
@@ -46,6 +59,7 @@ def extract_s3_info_from_sqs_message(body: str):
 
 
 def parse_video_id_from_key(key: str) -> str:
+    # expected: video-review/<video_id>/raw/<filename>.mp4
     parts = key.split("/")
     if len(parts) < 4:
         raise ValueError(f"Unexpected key format: {key}")
@@ -56,6 +70,7 @@ def parse_video_id_from_key(key: str) -> str:
 
 def main():
     sqs = boto3.client("sqs", region_name=AWS_REGION)
+    s3 = boto3.client("s3", region_name=AWS_REGION)
 
     while True:
         resp = sqs.receive_message(
@@ -92,9 +107,18 @@ def main():
             continue
 
         video_id = parse_video_id_from_key(key)
-        print(f"[JOB] bucket={bucket} key={key} video_id={video_id}")
 
-        # POC: delete immediately once parsed
+        # --- Workflow 03 minimal step: verify object exists (no download) ---
+        head = s3.head_object(Bucket=bucket, Key=key)
+        size = head.get("ContentLength")
+        etag = head.get("ETag")
+
+        print(
+            f"[JOB] bucket={bucket} key={key} video_id={video_id} "
+            f"exists=true size={size} etag={etag}"
+        )
+
+        # POC: delete immediately once parsed + verified
         sqs.delete_message(QueueUrl=SQS_QUEUE_URL, ReceiptHandle=receipt)
         print("[OK] deleted message")
 
