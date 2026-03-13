@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     sqs_queue_url: str = ""
     sqs_queue_arn: str = ""
 
+    # Local env
+    local_video_root: str = ""
+
     # Azure Blob
     azure_storage_connection_string: str = ""
     azure_storage_container: str = "video-review"

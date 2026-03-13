@@ -6,8 +6,9 @@ import json
 import os
 import time
 import urllib.parse
-
+from pathlib import Path
 import boto3
+import subprocess
 
 try:
     # Works when run from the project root, e.g. `python -m src.worker_sqs`.
@@ -18,7 +19,7 @@ except ModuleNotFoundError:
 
 AWS_REGION = settings.aws_region or "us-east-1"
 SQS_QUEUE_URL = settings.sqs_queue_url
-
+LOCAL_VIDEO_ROOT = settings.local_video_root
 
 
 def _try_parse_s3_event(payload: dict):
@@ -67,11 +68,50 @@ def parse_video_id_from_key(key: str) -> str:
         raise ValueError(f"Unexpected prefix: {parts[0]}")
     return parts[1]
 
+def local_path_from_s3_key(local_root: str, s3_key: str) -> Path:
+    # S3 key uses "/" always; convert to OS path safely
+    parts = [p for p in s3_key.split("/") if p]
+    return Path(local_root, *parts)
+
+def ensure_parent_dir(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def extract_audio_wav(input_mp4: Path, output_wav: Path) -> None:
+    """
+    Extract mono 16k wav for STT.
+    """
+    ensure_parent_dir(output_wav)
+
+    cmd = [
+        
+        "-y",
+        "-i",
+        str(input_mp4),
+        "-vn",
+        "-ac",
+        "1",
+        "-ar",
+        "16000",
+        "-c:a",
+        "pcm_s16le",
+        str(output_wav),
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(
+            "ffmpeg failed\n"
+            f"cmd: {' '.join(cmd)}\n"
+            f"stdout: {result.stdout}\n"
+            f"stderr: {result.stderr}\n"
+        )
+
 
 def main():
     sqs = boto3.client("sqs", region_name=AWS_REGION)
     s3 = boto3.client("s3", region_name=AWS_REGION)
-
+    print(f"AWS_REGION={AWS_REGION}")
+    print(f"LOCAL_VIDEO_ROOT={LOCAL_VIDEO_ROOT}")
     while True:
         resp = sqs.receive_message(
             QueueUrl=SQS_QUEUE_URL,
@@ -108,20 +148,35 @@ def main():
 
         video_id = parse_video_id_from_key(key)
 
-        # --- Workflow 03 minimal step: verify object exists (no download) ---
-        head = s3.head_object(Bucket=bucket, Key=key)
-        size = head.get("ContentLength")
-        etag = head.get("ETag")
+        try:
+            # --- Workflow 03 minimal step: verify object exists (no download) ---
+            head = s3.head_object(Bucket=bucket, Key=key)
+            size = head.get("ContentLength")
+            etag = head.get("ETag")
 
-        print(
-            f"[JOB] bucket={bucket} key={key} video_id={video_id} "
-            f"exists=true size={size} etag={etag}"
-        )
+            print(
+                f"[JOB] bucket={bucket} key={key} video_id={video_id} "
+                f"exists=true size={size} etag={etag}"
+            )
+            local_mp4 = local_path_from_s3_key(LOCAL_VIDEO_ROOT, key)
+            if not local_mp4.exists():
+                raise FileNotFoundError(f"Local mp4 not found: {local_mp4}")
 
-        # POC: delete immediately once parsed + verified
+            # Output wav next to video, in an audio/ folder
+            out_wav = Path(local_mp4.parent.parent, "audio", f"{local_mp4.stem}.wav")
+            extract_audio_wav(local_mp4, out_wav)
+            print(f"[OK] extracted wav: {out_wav}")
+            
+        except Exception as e:
+            # POC choice: delete even if failed, to keep queue moving
+            print(f"[ERR] {e}")
+            sqs.delete_message(QueueUrl=SQS_QUEUE_URL, ReceiptHandle=receipt)
+            print("[OK] deleted message after error (POC)")
+            continue
+
+            # POC: delete immediately once parsed + verified
         sqs.delete_message(QueueUrl=SQS_QUEUE_URL, ReceiptHandle=receipt)
         print("[OK] deleted message")
-
         time.sleep(0.2)
 
 
